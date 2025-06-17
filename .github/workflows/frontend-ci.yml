@@ -2,12 +2,8 @@ name: frontend-ci
 
 on:
   push:
-    paths:
-      - "olymna-frontend/**"
     branches: [main]
   pull_request:
-    paths:
-      - "olymna-frontend/**"
     branches: [main]
 
 jobs:
