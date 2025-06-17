@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "NEXT_PUBLIC_STRAPI_API_URL=$NEXT_PUBLIC_STRAPI_API_URL" >> .env.local
           echo "NEXT_PUBLIC_STRAPI_MEDIA_URL=$NEXT_PUBLIC_STRAPI_MEDIA_URL" >> .env.local
+          echo "NEXT_PUBLIC_STRAPI_TOKEN=$NEXT_PUBLIC_STRAPI_TOKEN" >> .env.local
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
