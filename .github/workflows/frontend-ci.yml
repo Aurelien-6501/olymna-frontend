@@ -9,16 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Create .env.local
-        working-directory: .
-        run: |
-          echo "NEXT_PUBLIC_STRAPI_API_URL=${{ secrets.NEXT_PUBLIC_STRAPI_API_URL }}" >> .env.local
-          echo "NEXT_PUBLIC_STRAPI_MEDIA_URL=${{ secrets.NEXT_PUBLIC_STRAPI_MEDIA_URL }}" >> .env.local
-          echo "NEXT_PUBLIC_STRAPI_TOKEN=${{ secrets.NEXT_PUBLIC_STRAPI_TOKEN }}" >> .env.local
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -26,17 +22,13 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: olymna-frontend
         run: npm ci
 
       - name: Lint
-        working-directory: olymna-frontend
         run: npm run lint
 
       - name: Type Check
-        working-directory: olymna-frontend
         run: npm run type-check || true
 
       - name: Build
-        working-directory: olymna-frontend
         run: npm run build
