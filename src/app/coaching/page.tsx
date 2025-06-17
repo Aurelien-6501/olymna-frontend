@@ -1,5 +1,5 @@
 import { fetchCoachings } from "@/lib/api/coaching";
-import { CoachingItem } from "@/types/strapi";
+import { Coaching } from "@/types/strapi";
 import Link from "next/link";
 
 export default async function CoachingPage() {
@@ -18,7 +18,7 @@ export default async function CoachingPage() {
       <h1 className="text-3xl font-bold mb-6">Nos Coachings</h1>
 
       <ul className="grid gap-6 md:grid-cols-2">
-        {coachings.map((item: CoachingItem) => {
+        {coachings.map((item: Coaching) => {
           if (!item) return null;
 
           const { id, titre, date_heure, coach, documentId } = item;
