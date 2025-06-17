@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Create .env.local
-        working-directory: olympna-frontend
+        working-directory: olymna-frontend
         run: |
           echo "NEXT_PUBLIC_STRAPI_API_URL=${{ secrets.NEXT_PUBLIC_STRAPI_API_URL }}" >> .env.local
           echo "NEXT_PUBLIC_STRAPI_MEDIA_URL=${{ secrets.NEXT_PUBLIC_STRAPI_MEDIA_URL }}" >> .env.local
@@ -26,17 +26,17 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: olympna-frontend
+        working-directory: olymna-frontend
         run: npm ci
 
       - name: Lint
-        working-directory: olympna-frontend
+        working-directory: olymna-frontend
         run: npm run lint
 
       - name: Type Check
-        working-directory: olympna-frontend
+        working-directory: olymna-frontend
         run: npm run type-check || true
 
       - name: Build
-        working-directory: olympna-frontend
+        working-directory: olymna-frontend
         run: npm run build
