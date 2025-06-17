@@ -30,5 +30,10 @@ jobs:
       - name: Type Check
         run: npm run type-check || true
 
+      - name: Create .env.local
+        run: |
+          echo "NEXT_PUBLIC_STRAPI_API_URL=$NEXT_PUBLIC_STRAPI_API_URL" >> .env.local
+          echo "NEXT_PUBLIC_STRAPI_MEDIA_URL=$NEXT_PUBLIC_STRAPI_MEDIA_URL" >> .env.local
+
       - name: Build
         run: npm run build
