@@ -26,3 +26,19 @@ export type Coaching = {
   coach: Coach | null;
   documentId: string;
 };
+
+export type Produit = {
+  id: number;
+  nom: string;
+  prix: number;
+  description: string;
+  photo: {
+    url: string;
+    formats?: {
+      thumbnail?: { url: string };
+      small?: { url: string };
+      medium?: { url: string };
+      large?: { url: string };
+    };
+  } | null;
+};
