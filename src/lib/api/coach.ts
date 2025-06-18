@@ -1,5 +1,5 @@
 import { fetchFromStrapi } from "./http";
-import { Coach } from "@/types/strapi";
+import { Coach } from "@/types/coach";
 
 export async function fetchCoachs(): Promise<Coach[]> {
   return fetchFromStrapi("coaches?populate=photo");

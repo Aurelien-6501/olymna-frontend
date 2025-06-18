@@ -1,5 +1,5 @@
 import { fetchCoachs } from "@/lib/api/coach";
-import { Coach } from "@/types/strapi";
+import { Coach } from "@/types/coach";
 import Image from "next/image";
 
 export default async function CoachPage() {

@@ -5,7 +5,7 @@ import { fetchCoachingById } from "@/lib/api/coaching";
 import { notFound } from "next/navigation";
 
 import { useEffect, useState, use } from "react";
-import { Coaching } from "@/types/strapi";
+import { Coaching } from "@/types/coaching";
 
 export default function CoachingDetailPage(props: {
   params: Promise<{ id: string }>;
@@ -18,6 +18,13 @@ export default function CoachingDetailPage(props: {
     const fetchData = async () => {
       const data = await fetchCoachingById(id);
       setCoaching(data);
+      setCoaching((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          nb_places: prev.nb_places - 1,
+        };
+      });
       setLoading(false);
     };
     fetchData();
@@ -57,22 +64,62 @@ export default function CoachingDetailPage(props: {
           <p className="text-sm text-gray-600">{coach.specialisation}</p>
         </div>
       )}
-      <ReservationButton />
+      <ReservationButton setCoaching={setCoaching} />
     </main>
   );
 }
 
-function ReservationButton() {
+function ReservationButton({
+  setCoaching,
+}: {
+  setCoaching: React.Dispatch<React.SetStateAction<Coaching | null>>;
+}) {
   const router = useRouter();
 
-  const handleClick = () => {
+  const handleReservation = async () => {
     const token = localStorage.getItem("jwt");
     if (!token) {
       router.push("/login");
-    } else {
-      // Logique de réservation ici
-      alert("Réservation en cours...");
+      return;
     }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/reservations`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            data: {
+              coaching: window.location.pathname.split("/").pop(),
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la réservation");
+      }
+
+      alert("Réservation effectuée !");
+      setCoaching((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          nb_places: prev.nb_places - 1,
+        };
+      });
+    } catch (error) {
+      alert("Erreur lors de la réservation");
+      console.error(error);
+    }
+  };
+
+  const handleClick = async () => {
+    await handleReservation();
   };
 
   return (

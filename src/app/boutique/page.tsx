@@ -1,5 +1,5 @@
 import { fetchProduits } from "@/lib/api/produit";
-import { Produit } from "@/types/strapi";
+import { Produit } from "@/types/produit";
 import Image from "next/image";
 
 export default async function BoutiquePage() {
@@ -14,12 +14,9 @@ export default async function BoutiquePage() {
       ) : (
         <ul className="grid gap-6 md:grid-cols-3">
           {produits.map((produit: Produit) => {
-            const photoUrl = produit.photo?.formats?.medium?.url
-              ? `${process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL}${produit.photo.formats.medium.url}`
-              : produit.photo?.url
-              ? `${process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL}${produit.photo.url}`
-              : "/default-product.jpg";
-
+            const photoUrl = produit.photo?.[0]?.url
+              ? `${process.env.NEXT_PUBLIC_STRAPI_MEDIA_URL}${produit.photo[0].url}`
+              : "/default-image.jpg";
             return (
               <li
                 key={produit.id}

@@ -7,9 +7,14 @@ export default function RegisterPage() {
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
+    setError("");
 
     try {
       const response = await fetch(
@@ -28,14 +33,18 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Inscription réussie", data);
-        // Rediriger ou stocker le token si nécessaire
+        localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        window.location.href = "/";
       } else {
-        console.error("Erreur d'inscription", data.error?.message || data);
+        setError(data.error?.message || "Erreur d'inscription");
       }
     } catch (err) {
+      setError("Erreur réseau");
       console.error("Erreur réseau", err);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -84,11 +93,15 @@ export default function RegisterPage() {
         </div>
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 rounded"
+          className="w-full bg-black text-white py-2 rounded disabled:opacity-50"
+          disabled={loading}
         >
-          S&apos;inscrire
+          {loading ? "Chargement..." : "S'inscrire"}
         </button>
       </form>
+      {error && (
+        <p className="text-red-500 text-sm text-center mt-4">{error}</p>
+      )}
     </main>
   );
 }

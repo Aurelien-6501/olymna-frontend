@@ -5,9 +5,14 @@ import { useState } from "react";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
+    setError("");
 
     try {
       const response = await fetch(
@@ -21,14 +26,18 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("Connexion réussie", data);
-        // Stocker le token ou rediriger
+        localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        window.location.href = "/";
       } else {
-        console.error("Erreur de connexion", data.message);
+        setError(data.error?.message || "Erreur de connexion");
       }
     } catch (err) {
+      setError("Erreur réseau");
       console.error("Erreur réseau", err);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -57,10 +66,14 @@ export default function LoginPage() {
         </div>
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 rounded"
+          className="w-full bg-black text-white py-2 rounded disabled:opacity-50"
+          disabled={loading}
         >
-          Se connecter
+          {loading ? "Chargement..." : "Se connecter"}
         </button>
+        {error && (
+          <p className="text-red-500 text-sm text-center mt-4">{error}</p>
+        )}
         <p className="text-center text-sm mt-4">
           Pas encore de compte ?{" "}
           <a href="/register" className="text-blue-600 underline">

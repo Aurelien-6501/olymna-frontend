@@ -1,5 +1,5 @@
 import { fetchCoachings } from "@/lib/api/coaching";
-import { Coaching } from "@/types/strapi";
+import { Coaching } from "@/types/coaching";
 import Link from "next/link";
 
 export default async function CoachingPage() {
