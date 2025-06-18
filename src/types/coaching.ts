@@ -9,4 +9,13 @@ export type Coaching = {
   nb_places: number;
   coach: Coach | null;
   documentId: string;
+  reservations?: {
+    id: number;
+    user: {
+      id: number;
+      username: string;
+      email: string;
+    };
+    createdAt: string;
+  }[];
 };

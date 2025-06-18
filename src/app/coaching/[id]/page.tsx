@@ -18,13 +18,6 @@ export default function CoachingDetailPage(props: {
     const fetchData = async () => {
       const data = await fetchCoachingById(id);
       setCoaching(data);
-      setCoaching((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          nb_places: prev.nb_places - 1,
-        };
-      });
       setLoading(false);
     };
     fetchData();
@@ -54,7 +47,7 @@ export default function CoachingDetailPage(props: {
       </p>
       <p className="text-sm text-gray-600 mb-2">Salle : {salle}</p>
       <p className="text-sm text-gray-600 mb-4">
-        Places disponibles : {nb_places}
+        Places disponibles : {nb_places - (coaching.reservations?.length || 0)}
       </p>
       {coach && (
         <div className="bg-gray-100 p-4 rounded mb-4">

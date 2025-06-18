@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchReservationsByUser } from "@/lib/api/reservation";
+import { cancelReservation } from "@/lib/api/dashboard";
 
 interface Reservation {
   id: number;
@@ -63,13 +64,29 @@ export default function DashboardPage() {
             const coaching = res.coaching;
             if (!coaching) return null;
 
+            const handleCancelReservation = async () => {
+              const token = localStorage.getItem("jwt");
+              if (!token) return;
+
+              const success = await cancelReservation(res.id, token);
+              if (success) {
+                setReservations((prev) => prev.filter((r) => r.id !== res.id));
+              }
+            };
+
             return (
               <li key={res.id} className="border p-4 rounded shadow-sm">
                 <h3 className="font-bold">{coaching.titre}</h3>
                 <p className="text-sm text-gray-600">
                   {new Date(coaching.date_heure).toLocaleString()}
                 </p>
-                <p className="text-sm">Salle : {coaching.salle}</p>
+                <p className="text-sm mb-2">Salle : {coaching.salle}</p>
+                <button
+                  onClick={handleCancelReservation}
+                  className="text-sm text-red-600 hover:underline"
+                >
+                  Annuler la réservation
+                </button>
               </li>
             );
           })}
