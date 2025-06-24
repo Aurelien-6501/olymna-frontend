@@ -36,7 +36,15 @@ export default function CoachingDetailPage(props: {
     return null;
   }
 
-  const { titre, description, date_heure, salle, nb_places, coach } = coaching;
+  const {
+    titre,
+    description,
+    date_heure,
+    salle,
+    nb_places,
+    coach,
+    reservations,
+  } = coaching;
 
   return (
     <main className="p-8 max-w-3xl mx-auto">
@@ -47,7 +55,7 @@ export default function CoachingDetailPage(props: {
       </p>
       <p className="text-sm text-gray-600 mb-2">Salle : {salle}</p>
       <p className="text-sm text-gray-600 mb-4">
-        Places disponibles : {nb_places - (coaching.reservations?.length || 0)}
+        Places disponibles : {nb_places - (reservations?.length || 0)}
       </p>
       {coach && (
         <div className="bg-gray-100 p-4 rounded mb-4">
@@ -57,14 +65,16 @@ export default function CoachingDetailPage(props: {
           <p className="text-sm text-gray-600">{coach.specialisation}</p>
         </div>
       )}
-      <ReservationButton setCoaching={setCoaching} />
+      <ReservationButton coaching={coaching} setCoaching={setCoaching} />
     </main>
   );
 }
 
 function ReservationButton({
+  coaching,
   setCoaching,
 }: {
+  coaching: Coaching;
   setCoaching: React.Dispatch<React.SetStateAction<Coaching | null>>;
 }) {
   const router = useRouter();
@@ -73,6 +83,16 @@ function ReservationButton({
     const token = localStorage.getItem("jwt");
     if (!token) {
       router.push("/login");
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const existingReservation = coaching?.reservations?.some(
+      (res: { user: { id: number } }) => res?.user?.id === user.id
+    );
+
+    if (existingReservation) {
+      alert("Vous avez déjà réservé ce coaching.");
       return;
     }
 
@@ -102,7 +122,18 @@ function ReservationButton({
         if (!prev) return prev;
         return {
           ...prev,
-          nb_places: prev.nb_places - 1,
+          reservations: [
+            ...(prev.reservations || []),
+            {
+              id: Date.now(),
+              user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+              },
+              createdAt: new Date().toISOString(),
+            },
+          ],
         };
       });
     } catch (error) {

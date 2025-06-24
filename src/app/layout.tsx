@@ -31,7 +31,22 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <footer className="text-center text-xs text-gray-500 mt-auto p-4 border-t">
-          © {new Date().getFullYear()} Olymna — Tous droits réservés.
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <span>
+              © {new Date().getFullYear()} Olymna — Tous droits réservés.
+            </span>
+            <nav className="flex gap-3">
+              <a href="/mentions-legales" className="hover:underline">
+                Mentions légales
+              </a>
+              <a href="/contact" className="hover:underline">
+                Nous contacter
+              </a>
+              <a href="/cgv" className="hover:underline">
+                CGV
+              </a>
+            </nav>
+          </div>
         </footer>
       </body>
     </html>

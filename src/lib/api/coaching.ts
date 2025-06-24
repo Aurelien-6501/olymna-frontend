@@ -6,7 +6,7 @@ export async function fetchCoachings() {
 
 export async function fetchCoachingById(documentId: string) {
   const res = await fetchFromStrapi(
-    `coachings?populate=coach&filters[documentId][$eq]=${documentId}`
+    `coachings?populate[coach]=true&populate[reservations][populate][user]=true&filters[documentId][$eq]=${documentId}`
   );
 
   return res?.[0] ?? null;

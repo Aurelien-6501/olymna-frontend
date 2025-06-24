@@ -1,8 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+const handleGoogleLogin = () => {
+  window.location.href = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/connect/google`;
+};
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      router.push("/");
+    }
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -70,6 +84,15 @@ export default function LoginPage() {
           disabled={loading}
         >
           {loading ? "Chargement..." : "Se connecter"}
+        </button>
+        <div className="my-4 text-center text-sm text-gray-500">ou</div>
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full bg-white border border-gray-300 text-black py-2 rounded hover:bg-gray-100 flex items-center justify-center space-x-2"
+        >
+          <img src="/google.svg" alt="Google" className="w-5 h-5" />
+          <span>Se connecter avec Google</span>
         </button>
         {error && (
           <p className="text-red-500 text-sm text-center mt-4">{error}</p>

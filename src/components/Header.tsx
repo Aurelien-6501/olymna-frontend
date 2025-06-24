@@ -8,16 +8,21 @@ export default function Header() {
 
   useEffect(() => {
     const checkAuth = () => {
-      setIsLoggedIn(!!localStorage.getItem("jwt"));
+      setIsLoggedIn(
+        !!localStorage.getItem("jwt") || !!localStorage.getItem("google_jwt")
+      );
     };
 
     checkAuth();
+    setTimeout(checkAuth, 0);
     window.addEventListener("storage", checkAuth);
     window.addEventListener("authChange", checkAuth);
+    window.addEventListener("load", checkAuth);
 
     return () => {
       window.removeEventListener("storage", checkAuth);
       window.removeEventListener("authChange", checkAuth);
+      window.removeEventListener("load", checkAuth);
     };
   }, []);
 
