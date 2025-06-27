@@ -6,6 +6,7 @@ export type Coaching = {
   description: string;
   date_heure: string;
   salle: string;
+  categorieCours: string;
   nb_places: number;
   coach: Coach | null;
   documentId: string;

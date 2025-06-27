@@ -44,6 +44,7 @@ export default function CoachingDetailPage(props: {
     nb_places,
     coach,
     reservations,
+    categorieCours,
   } = coaching;
 
   return (
@@ -57,6 +58,7 @@ export default function CoachingDetailPage(props: {
       <p className="text-sm text-gray-600 mb-4">
         Places disponibles : {nb_places - (reservations?.length || 0)}
       </p>
+      <p className="text-sm text-gray-600 mb-2">Categorie : {categorieCours}</p>
       {coach && (
         <div className="bg-gray-100 p-4 rounded mb-4">
           <p className="font-semibold">

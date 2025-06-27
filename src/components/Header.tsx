@@ -7,6 +7,18 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const jwt = url.searchParams.get("jwt");
+
+    if (jwt) {
+      localStorage.setItem("jwt", jwt);
+      url.searchParams.delete("jwt");
+      window.history.replaceState({}, "", url.pathname); // Nettoie l’URL
+      window.dispatchEvent(new Event("authChange")); // Déclenche une MAJ
+    }
+  }, []);
+
+  useEffect(() => {
     const checkAuth = () => {
       setIsLoggedIn(
         !!localStorage.getItem("jwt") || !!localStorage.getItem("google_jwt")

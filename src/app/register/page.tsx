@@ -23,6 +23,16 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const passwordIsValid = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
+      password
+    );
+    if (!passwordIsValid) {
+      setError(
+        "Le mot de passe doit contenir au moins 8 caractères et un caractère spécial."
+      );
+      return;
+    }
+
     setLoading(true);
     setError("");
 

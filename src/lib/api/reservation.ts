@@ -1,12 +1,14 @@
 import { fetchFromStrapi } from "./http";
 
-export async function fetchReservationsByUser(userId: string) {
-  if (!userId) return [];
+export async function fetchReservationsByUser(userIdentifier: string) {
+  if (!userIdentifier) return [];
+
+  const isEmail = userIdentifier.includes("@");
 
   const query = new URLSearchParams({
     "populate[coaching]": "true",
     "populate[user]": "true",
-    "filters[user][id][$eq]": userId,
+    [`filters[user][${isEmail ? "email" : "id"}][$eq]`]: userIdentifier,
   });
 
   const res = await fetchFromStrapi(`reservations?${query.toString()}`);

@@ -18,7 +18,7 @@ export default function HomePage() {
           href="/coaching"
           className="p-6 rounded-lg shadow-md hover:shadow-lg border border-gray-200 hover:bg-gray-50 transition text-left"
         >
-          <h2 className="text-2xl font-semibold mb-2">👟 Nos coachings</h2>
+          <h2 className="text-2xl font-semibold mb-2">👟 Nos cours</h2>
           <p className="text-gray-600 mb-4">
             Découvrez nos séances encadrées pour vous remettre en forme à votre
             rythme.
